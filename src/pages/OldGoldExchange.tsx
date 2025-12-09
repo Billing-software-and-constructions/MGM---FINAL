@@ -63,6 +63,7 @@ const OldGoldExchange = () => {
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerGstPan, setCustomerGstPan] = useState("");
   const [creditedAmount, setCreditedAmount] = useState("");
+  const [discountAmount, setDiscountAmount] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("buy-ornaments");
   const [billItems, setBillItems] = useState<BillItem[]>([]);
@@ -350,9 +351,12 @@ const OldGoldExchange = () => {
   
   const totalOldOrnamentValue = oldOrnaments.reduce((sum, item) => sum + item.value, 0);
   
-  // If buying ornaments, deduct old ornament value from total. If cash, no items are added
+  // Calculate discount
+  const discountValue = parseFloat(discountAmount) || 0;
+  
+  // If buying ornaments, deduct old ornament value and discount from total. If cash, no items are added
   const grandTotal = activeTab === "buy-ornaments" 
-    ? subtotal + gstAmount - totalOldOrnamentValue
+    ? subtotal + gstAmount - totalOldOrnamentValue - discountValue
     : 0;
 
   // Calculate remaining amount
@@ -472,6 +476,7 @@ const OldGoldExchange = () => {
         setCustomerAddress("");
         setCustomerGstPan("");
         setCreditedAmount("");
+        setDiscountAmount("");
         setBillItems([]);
         setOldOrnaments([]);
         setCurrentInvoiceNumber("");
@@ -995,6 +1000,18 @@ const OldGoldExchange = () => {
                             <span className="font-medium text-destructive">-₹{totalOldOrnamentValue.toLocaleString()}</span>
                           </div>
                         )}
+                        <div className="space-y-1.5 pt-2">
+                          <Label htmlFor="discountAmount" className="text-sm">Discount Amount</Label>
+                          <Input
+                            id="discountAmount"
+                            type="number"
+                            step="0.01"
+                            placeholder="Enter discount amount"
+                            value={discountAmount}
+                            onChange={(e) => setDiscountAmount(e.target.value)}
+                            className="h-9"
+                          />
+                        </div>
                       </div>
                        <div className="flex justify-between items-center pt-2">
                         <span className="text-base font-semibold">
