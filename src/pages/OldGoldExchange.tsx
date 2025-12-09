@@ -1063,6 +1063,7 @@ const OldGoldExchange = () => {
               subtotal={subtotal}
               gstPercentage={gstPercentage}
               gstAmount={gstAmount}
+              discountAmount={discountValue}
               grandTotal={grandTotal}
               exchangeType={activeTab}
               invoiceNumber={currentInvoiceNumber}
