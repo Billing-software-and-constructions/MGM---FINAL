@@ -554,8 +554,8 @@ const BillHistory = () => {
 
       {/* Bill Details Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogHeader className="p-4 border-b sticky top-0 bg-background z-10">
             <DialogTitle className="flex items-center justify-between">
               <span>Bill Details</span>
               <Button onClick={handlePrintBill} className="gap-2">
@@ -570,114 +570,180 @@ const BillHistory = () => {
               <p className="text-muted-foreground">Loading details...</p>
             </div>
           ) : selectedBill ? (
-            <div className="space-y-4">
-              {/* Bill Header Info */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Bill Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="grid grid-cols-2 gap-4">
-                    {selectedBill.invoice_number && (
-                      <div>
-                        <p className="text-sm text-muted-foreground">Invoice Number</p>
-                        <p className="font-semibold">{selectedBill.invoice_number}</p>
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-sm text-muted-foreground">Customer Name</p>
-                      <p className="font-semibold">{selectedBill.customer_name}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Bill Date</p>
-                      <p className="font-medium">{format(new Date(selectedBill.bill_date), "PPP")}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Time</p>
-                      <p className="font-medium">{format(new Date(selectedBill.bill_date), "p")}</p>
-                    </div>
-                    {selectedBill.gold_rate && (
-                      <div>
-                        <p className="text-sm text-muted-foreground">Gold Rate</p>
-                        <p className="font-medium">₹{selectedBill.gold_rate}/g</p>
-                      </div>
-                    )}
-                    {selectedBill.gst_percentage && (
-                      <div>
-                        <p className="text-sm text-muted-foreground">GST Rate</p>
-                        <p className="font-medium">{selectedBill.gst_percentage}%</p>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="p-4 bg-white text-black">
+              {/* Invoice Header */}
+              <div className="border-2 border-black">
+                <div className="text-center py-3 border-b border-black">
+                  <img src="/lovable-uploads/mgm-logo.jpg" alt="MGM Jewellers Logo" className="h-16 mx-auto mb-1" 
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                  <p className="text-sm">Ph: 9842112416 | +91 96885 01717</p>
+                </div>
+                
+                <div className="text-center py-2 border-b border-black">
+                  <p className="text-base font-bold">SALE INVOICE</p>
+                </div>
 
-              {/* Bill Items */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Bill Items</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {billItems.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-4">No items found</p>
-                  ) : (
-                    <div className="space-y-4">
-                      {billItems.map((item, index) => (
-                        <div key={item.id} className="border-b last:border-0 pb-4 last:pb-0">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <p className="font-semibold">Item #{index + 1}</p>
-                              <p className="text-sm text-muted-foreground">{item.category_name}</p>
-                            </div>
-                            <p className="text-lg font-bold">₹{(item.gold_amount + item.seikuli_amount).toLocaleString()}</p>
-                          </div>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
-                            <div>
-                              <p className="text-xs text-muted-foreground">Weight</p>
-                              <p className="font-medium">{item.weight}g</p>
-                            </div>
-                            <div>
-                              <p className="text-xs text-muted-foreground">Gold Amount</p>
-                              <p className="font-medium">₹{item.gold_amount.toLocaleString()}</p>
-                            </div>
-                            <div>
-                              <p className="text-xs text-muted-foreground">Seikuli Rate</p>
-                              <p className="font-medium">₹{item.seikuli_rate}/g</p>
-                            </div>
-                            <div>
-                              <p className="text-xs text-muted-foreground">Seikuli Amount</p>
-                              <p className="font-medium">₹{item.seikuli_amount.toLocaleString()}</p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                {/* Company and Invoice Details */}
+                <div className="grid grid-cols-2 gap-4 p-3 text-sm border-b border-black">
+                  <div>
+                    <table className="w-full">
+                      <tbody>
+                        <tr>
+                          <td className="font-semibold py-0.5">Shop Name</td>
+                          <td className="py-0.5">: MGM JEWELLERS</td>
+                        </tr>
+                        <tr>
+                          <td className="font-semibold py-0.5 align-top">Address</td>
+                          <td className="py-0.5">: 326/1 Rajapalayam Main Road,<br />Sankarankovil-627756</td>
+                        </tr>
+                        {selectedBill.gst_amount > 0 && (
+                          <tr>
+                            <td className="font-semibold py-0.5">GSTIN</td>
+                            <td className="py-0.5">: 33ABLFM1188M1ZU</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div>
+                    <table className="w-full">
+                      <tbody>
+                        <tr>
+                          <td className="font-semibold py-0.5">SI No of Invoice</td>
+                          <td className="py-0.5">: {selectedBill.invoice_number || '-'}</td>
+                        </tr>
+                        <tr>
+                          <td className="font-semibold py-0.5">Date of Invoice</td>
+                          <td className="py-0.5">: {format(new Date(selectedBill.bill_date), "dd/MM/yyyy")}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
-              {/* Bill Summary */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Bill Summary</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex justify-between text-lg">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span className="font-semibold">₹{Number(selectedBill.subtotal).toLocaleString()}</span>
+                {/* Customer Details */}
+                <div className="p-3 text-sm border-b border-black">
+                  <p className="font-bold mb-1">Details of Receiver (Billed to)</p>
+                  <table className="w-full">
+                    <tbody>
+                      <tr>
+                        <td className="font-semibold py-0.5">Name</td>
+                        <td className="py-0.5">: {selectedBill.customer_name}</td>
+                      </tr>
+                      <tr>
+                        <td className="font-semibold py-0.5">Address</td>
+                        <td className="py-0.5">: Sankarankovil</td>
+                      </tr>
+                      <tr>
+                        <td className="font-semibold py-0.5">Phone</td>
+                        <td className="py-0.5">: -</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Items Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse">
+                    <thead>
+                      <tr className="border-b border-black bg-gray-100">
+                        <th className="border-r border-black p-2 text-center">S.NO</th>
+                        <th className="border-r border-black p-2 text-left">Category</th>
+                        <th className="border-r border-black p-2 text-left">Subcategory</th>
+                        <th className="border-r border-black p-2 text-center">Weight (grams)</th>
+                        <th className="border-r border-black p-2 text-right">Rate per gram</th>
+                        <th className="p-2 text-right">Total Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {billItems.map((item, index) => {
+                        const totalPrice = item.gold_amount + item.seikuli_amount;
+                        const gstForItem = totalPrice * (selectedBill.gst_percentage || 0) / 100;
+                        const totalWithGst = totalPrice + gstForItem;
+                        
+                        return (
+                          <tr key={item.id} className="border-b border-black">
+                            <td className="border-r border-black p-2 text-center">{index + 1}</td>
+                            <td className="border-r border-black p-2">{item.category_name}</td>
+                            <td className="border-r border-black p-2">-</td>
+                            <td className="border-r border-black p-2 text-center">{item.weight.toFixed(3)}</td>
+                            <td className="border-r border-black p-2 text-right">₹{selectedBill.gold_rate?.toFixed(2) || '0.00'}</td>
+                            <td className="p-2 text-right">₹{totalWithGst.toFixed(2)}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Totals Section */}
+                <div className="grid grid-cols-2 gap-4 p-3 text-sm border-t border-black">
+                  <div>
+                    <p className="font-semibold mb-1">Bank Details:</p>
+                    <table className="w-full">
+                      <tbody>
+                        <tr>
+                          <td className="py-0.5">A/C No</td>
+                          <td className="py-0.5">: 40836933733</td>
+                        </tr>
+                        <tr>
+                          <td className="py-0.5">Bank</td>
+                          <td className="py-0.5">: State Bank of India</td>
+                        </tr>
+                        <tr>
+                          <td className="py-0.5">IFSC Code</td>
+                          <td className="py-0.5">: SBIN0071235</td>
+                        </tr>
+                        <tr>
+                          <td className="py-0.5">Branch</td>
+                          <td className="py-0.5">: Sankarankovil branch</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                  <div className="flex justify-between text-lg">
-                    <span className="text-muted-foreground">GST ({selectedBill.gst_percentage}%)</span>
-                    <span className="font-semibold">₹{Number(selectedBill.gst_amount).toLocaleString()}</span>
+                  <div>
+                    <table className="w-full">
+                      <tbody>
+                        <tr className="font-bold border-t-2 border-black">
+                          <td className="py-1">NET PAYABLE</td>
+                          <td className="py-1 text-right">₹{Number(selectedBill.grand_total).toFixed(2)}</td>
+                        </tr>
+                        <tr className="font-bold border-t-2 border-black">
+                          <td className="py-1">CASH AMOUNT</td>
+                          <td className="py-1 text-right">₹{Number(selectedBill.grand_total).toFixed(2)}</td>
+                        </tr>
+                        <tr className="font-semibold">
+                          <td className="py-1">REMAINING AMOUNT</td>
+                          <td className="py-1 text-right">₹0.00</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                  <div className="border-t pt-3">
-                    <div className="flex justify-between text-xl">
-                      <span className="font-bold">Grand Total</span>
-                      <span className="font-bold text-primary">₹{Number(selectedBill.grand_total).toLocaleString()}</span>
-                    </div>
+                </div>
+
+                {/* Terms and Signature */}
+                <div className="grid grid-cols-2 gap-4 p-3 text-sm border-t border-black">
+                  <div>
+                    <p className="font-semibold mb-1">Terms and Conditions:</p>
+                    <p className="text-xs leading-snug">
+                      This invoice is applicable only for Gold, Diamond and Precious ornaments. 
+                      In addition to the indication of separate description of each article, 
+                      net weight of precious metal, purity in carat and fineness, gross weight 
+                      in bill or invoice or sale of hallmarked precious metal articles.
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="text-right">
+                    <p className="font-semibold mb-8">For MGM JEWELLERS</p>
+                    <p className="border-t border-black pt-1 inline-block px-4">Authorized Signatory</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="text-center mt-2 text-sm">
+                <p className="italic text-gray-600">This is a computer generated invoice and needs no signature.</p>
+                <p className="mt-1 text-xs text-gray-500">Powered by Techverse Infotech (8248329035)</p>
+              </div>
             </div>
           ) : null}
         </DialogContent>
@@ -713,8 +779,8 @@ const BillHistory = () => {
 
       {/* Old Exchange Details Dialog */}
       <Dialog open={isExchangeDialogOpen} onOpenChange={setIsExchangeDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogHeader className="p-4 border-b sticky top-0 bg-background z-10">
             <DialogTitle className="flex items-center justify-between">
               <span>Exchange Details</span>
               <Button onClick={handlePrintBill} className="gap-2">
@@ -725,93 +791,156 @@ const BillHistory = () => {
           </DialogHeader>
           
           {selectedExchange ? (
-            <div className="space-y-4">
-              {/* Exchange Header Info */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Exchange Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="grid grid-cols-2 gap-4">
-                    {selectedExchange.invoice_number && (
-                      <div>
-                        <p className="text-sm text-muted-foreground">Invoice Number</p>
-                        <p className="font-semibold">{selectedExchange.invoice_number}</p>
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-sm text-muted-foreground">Customer Name</p>
-                      <p className="font-semibold">{selectedExchange.customer_name}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Exchange Date</p>
-                      <p className="font-medium">{format(new Date(selectedExchange.created_at), "PPP")}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Time</p>
-                      <p className="font-medium">{format(new Date(selectedExchange.created_at), "p")}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Exchange Type</p>
-                      <p className="font-medium capitalize">{selectedExchange.exchange_type}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Metal Rate</p>
-                      <p className="font-medium">₹{selectedExchange.metal_rate}/g</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="p-4 bg-white text-black">
+              {/* Invoice Header */}
+              <div className="border-2 border-black">
+                <div className="text-center py-3 border-b border-black">
+                  <img src="/lovable-uploads/mgm-logo.jpg" alt="MGM Jewellers Logo" className="h-16 mx-auto mb-1" 
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                  <p className="text-sm">Ph: 9842112416 | +91 96885 01717</p>
+                </div>
+                
+                <div className="text-center py-2 border-b border-black">
+                  <p className="text-base font-bold">OLD GOLD EXCHANGE</p>
+                </div>
 
-              {/* Exchange Item Details */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Item Details</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+                {/* Company and Invoice Details */}
+                <div className="grid grid-cols-2 gap-4 p-3 text-sm border-b border-black">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Category</p>
-                    <p className="font-semibold text-lg">{selectedExchange.category_name}</p>
-                    {selectedExchange.subcategory_name && (
-                      <>
-                        <p className="text-sm text-muted-foreground mt-2 mb-1">Subcategory</p>
-                        <p className="font-medium">{selectedExchange.subcategory_name}</p>
-                      </>
-                    )}
+                    <table className="w-full">
+                      <tbody>
+                        <tr>
+                          <td className="font-semibold py-0.5">Shop Name</td>
+                          <td className="py-0.5">: MGM JEWELLERS</td>
+                        </tr>
+                        <tr>
+                          <td className="font-semibold py-0.5 align-top">Address</td>
+                          <td className="py-0.5">: 326/1 Rajapalayam Main Road,<br />Sankarankovil-627756</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Initial Weight</p>
-                      <p className="text-2xl font-bold">{selectedExchange.initial_weight}g</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Final Weight (After Deduction)</p>
-                      <p className="text-2xl font-bold text-primary">{selectedExchange.final_weight}g</p>
-                    </div>
+                  <div>
+                    <table className="w-full">
+                      <tbody>
+                        <tr>
+                          <td className="font-semibold py-0.5">SI No of Invoice</td>
+                          <td className="py-0.5">: {selectedExchange.invoice_number || '-'}</td>
+                        </tr>
+                        <tr>
+                          <td className="font-semibold py-0.5">Date of Invoice</td>
+                          <td className="py-0.5">: {format(new Date(selectedExchange.created_at), "dd/MM/yyyy")}</td>
+                        </tr>
+                        <tr>
+                          <td className="font-semibold py-0.5">Exchange Type</td>
+                          <td className="py-0.5 capitalize">: {selectedExchange.exchange_type}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
+                </div>
 
-                  <div className="bg-muted/50 p-4 rounded-lg mt-4">
-                    <p className="text-sm text-muted-foreground mb-2">Calculation</p>
-                    <p className="font-mono text-lg">
-                      {selectedExchange.final_weight}g × ₹{selectedExchange.metal_rate}/g = ₹{Number(selectedExchange.exchange_value).toLocaleString()}
+                {/* Customer Details */}
+                <div className="p-3 text-sm border-b border-black">
+                  <p className="font-bold mb-1">Details of Customer</p>
+                  <table className="w-full">
+                    <tbody>
+                      <tr>
+                        <td className="font-semibold py-0.5">Name</td>
+                        <td className="py-0.5">: {selectedExchange.customer_name}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Items Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse">
+                    <thead>
+                      <tr className="border-b border-black bg-gray-100">
+                        <th className="border-r border-black p-2 text-center">S.NO</th>
+                        <th className="border-r border-black p-2 text-left">Category</th>
+                        <th className="border-r border-black p-2 text-left">Subcategory</th>
+                        <th className="border-r border-black p-2 text-center">Initial Weight</th>
+                        <th className="border-r border-black p-2 text-center">Final Weight</th>
+                        <th className="border-r border-black p-2 text-right">Rate per gram</th>
+                        <th className="p-2 text-right">Exchange Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-black">
+                        <td className="border-r border-black p-2 text-center">1</td>
+                        <td className="border-r border-black p-2">{selectedExchange.category_name}</td>
+                        <td className="border-r border-black p-2">{selectedExchange.subcategory_name || '-'}</td>
+                        <td className="border-r border-black p-2 text-center">{selectedExchange.initial_weight.toFixed(3)}g</td>
+                        <td className="border-r border-black p-2 text-center">{selectedExchange.final_weight.toFixed(3)}g</td>
+                        <td className="border-r border-black p-2 text-right">₹{selectedExchange.metal_rate.toFixed(2)}</td>
+                        <td className="p-2 text-right font-semibold">₹{selectedExchange.exchange_value.toFixed(2)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Totals Section */}
+                <div className="grid grid-cols-2 gap-4 p-3 text-sm border-t border-black">
+                  <div>
+                    <p className="font-semibold mb-1">Bank Details:</p>
+                    <table className="w-full">
+                      <tbody>
+                        <tr>
+                          <td className="py-0.5">A/C No</td>
+                          <td className="py-0.5">: 40836933733</td>
+                        </tr>
+                        <tr>
+                          <td className="py-0.5">Bank</td>
+                          <td className="py-0.5">: State Bank of India</td>
+                        </tr>
+                        <tr>
+                          <td className="py-0.5">IFSC Code</td>
+                          <td className="py-0.5">: SBIN0071235</td>
+                        </tr>
+                        <tr>
+                          <td className="py-0.5">Branch</td>
+                          <td className="py-0.5">: Sankarankovil branch</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div>
+                    <table className="w-full">
+                      <tbody>
+                        <tr className="font-bold border-t-2 border-black">
+                          <td className="py-1">CASH AMOUNT</td>
+                          <td className="py-1 text-right">₹{Number(selectedExchange.exchange_value).toFixed(2)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Terms and Signature */}
+                <div className="grid grid-cols-2 gap-4 p-3 text-sm border-t border-black">
+                  <div>
+                    <p className="font-semibold mb-1">Terms and Conditions:</p>
+                    <p className="text-xs leading-snug">
+                      This invoice is applicable only for Gold, Diamond and Precious ornaments. 
+                      In addition to the indication of separate description of each article, 
+                      net weight of precious metal, purity in carat and fineness, gross weight 
+                      in bill or invoice or sale of hallmarked precious metal articles.
                     </p>
                   </div>
-                </CardContent>
-              </Card>
-
-              {/* Exchange Value Summary */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Exchange Value</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center p-4 bg-primary/10 rounded-lg">
-                    <span className="text-xl font-bold">Cash Amount</span>
-                    <span className="text-3xl font-bold text-primary">₹{Number(selectedExchange.exchange_value).toLocaleString()}</span>
+                  <div className="text-right">
+                    <p className="font-semibold mb-8">For MGM JEWELLERS</p>
+                    <p className="border-t border-black pt-1 inline-block px-4">Authorized Signatory</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="text-center mt-2 text-sm">
+                <p className="italic text-gray-600">This is a computer generated invoice and needs no signature.</p>
+                <p className="mt-1 text-xs text-gray-500">Powered by Techverse Infotech (8248329035)</p>
+              </div>
             </div>
           ) : null}
         </DialogContent>
