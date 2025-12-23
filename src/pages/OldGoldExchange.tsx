@@ -409,6 +409,7 @@ const OldGoldExchange = () => {
 
       // Save bill only if buying ornaments
       if (activeTab === "buy-ornaments" && billItems.length > 0) {
+        const discountValue = parseFloat(discountAmount) || 0;
         const { data: billData, error: billError } = await supabase
           .from('bills')
           .insert({
@@ -420,6 +421,7 @@ const OldGoldExchange = () => {
             gst_amount: gstAmount,
             grand_total: grandTotal,
             invoice_number: invoiceNumber,
+            discount_amount: discountValue,
           })
           .select()
           .single();
