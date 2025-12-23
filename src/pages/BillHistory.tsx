@@ -34,6 +34,7 @@ interface Bill {
   gold_rate?: number;
   gst_percentage?: number;
   invoice_number?: string;
+  discount_amount?: number;
 }
 
 interface BillItem {
@@ -703,6 +704,7 @@ const BillHistory = () => {
           gstPercentage={selectedBill.gst_percentage || 0}
           subtotal={selectedBill.subtotal}
           gstAmount={selectedBill.gst_amount}
+          discountAmount={selectedBill.discount_amount || 0}
           grandTotal={selectedBill.grand_total}
           exchangeType="buy-ornaments"
           invoiceNumber={selectedBill.invoice_number}
