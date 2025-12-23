@@ -73,7 +73,6 @@ export type Database = {
           bill_date: string
           created_at: string | null
           customer_name: string
-          discount_amount: number | null
           gold_rate: number
           grand_total: number
           gst_amount: number
@@ -87,7 +86,6 @@ export type Database = {
           bill_date?: string
           created_at?: string | null
           customer_name: string
-          discount_amount?: number | null
           gold_rate: number
           grand_total: number
           gst_amount: number
@@ -101,7 +99,6 @@ export type Database = {
           bill_date?: string
           created_at?: string | null
           customer_name?: string
-          discount_amount?: number | null
           gold_rate?: number
           grand_total?: number
           gst_amount?: number
